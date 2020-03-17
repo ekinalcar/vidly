@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
+const Joi = require("@hapi/joi");
+
 let genres = [
   { id: 1, name: "Action" },
   { id: 2, name: "Horror" },

@@ -1,23 +1,21 @@
 const debug = require("debug")("app:startup");
-const dbDebugger = require("debug")("app:db");
 const config = require("config");
-const Joi = require("@hapi/joi");
 const morgan = require("morgan");
 const express = require("express");
 const helmet = require("helmet");
 const bodyParser = require("body-parser");
+const genres = require("./routes/genres");
 
 const app = express();
-const genres = require("./routes/genres");
 
 if (app.get("env") === "development") {
   app.use(morgan("tiny"));
   debug("morgan enabled");
 }
-
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use("/api/genres", genres);
 
 const port = process.env.PORT || 3000;
