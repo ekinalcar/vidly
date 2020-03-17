@@ -1,4 +1,5 @@
 const debug = require("debug")("app:startup");
+const mongoose = require("mongoose");
 const config = require("config");
 const morgan = require("morgan");
 const express = require("express");
@@ -7,6 +8,16 @@ const bodyParser = require("body-parser");
 const genres = require("./routes/genres");
 
 const app = express();
+
+mongoose
+  .connect("mongodb://localhost/vidly", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(() => {
+    console.log("connected to mongodb");
+  })
+  .catch(err => console.log(err));
 
 if (app.get("env") === "development") {
   app.use(morgan("tiny"));
