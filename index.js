@@ -14,7 +14,7 @@ const rentals = require("./routes/rentals");
 const app = express();
 
 mongoose
-  .connect("mongodb://localhost/vidly", {
+  .connect("mongodb://localhost:27017/vidly", {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
