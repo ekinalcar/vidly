@@ -17,11 +17,7 @@ const validateUser = user => {
     password: Joi.string()
       .min(5)
       .max(255)
-      .required(),
-    password_confirmation: Joi.any()
-      .valid(Joi.ref("password"))
       .required()
-      .options({ language: { any: { allowOnly: "must match password" } } })
   });
   return schema.validate(user);
 };
@@ -46,16 +42,14 @@ const userSchema = new mongoose.Schema({
     minlength: 5,
     maxlength: 1024
   },
-  password_confirmation: {
-    type: String,
-    required: true,
-    minlength: 5,
-    maxlength: 1024
-  }
+  isAdmin: Boolean
 });
 
 userSchema.methods.generateAuthToken = function() {
-  const token = jwt.sign({ _id: this._id }, config.get("jwtPrivateKey"));
+  const token = jwt.sign(
+    { _id: this._id, isAdmin: this.isAdmin },
+    config.get("jwtPrivateKey")
+  );
   return token;
 };
 
