@@ -1,4 +1,5 @@
 require("express-async-errors");
+const winston = require("winston");
 const debug = require("debug")("app:startup");
 const config = require("config");
 const error = require("./middleware/error");
@@ -16,6 +17,13 @@ const users = require("./routes/users");
 const auth = require("./routes/auth");
 
 const app = express();
+
+process.on("uncaughtException", ex => {
+  console.log("we have an uncaughtException!!");
+  winston.error(ex.message, ex);
+});
+
+winston.add(winston.transports.File, { filename: "logFile.log" });
 
 if (!config.get("jwtPrivateKey")) {
   console.log("FATAL ERROR JWT not provided");
